@@ -31,6 +31,9 @@ export default (state = INITIAL_STATE, action) => {
         error: action.error
       }
 
+    case actions.POKEMON_CLEAR:
+      return INITIAL_STATE
+
     default: return state
   }
 }

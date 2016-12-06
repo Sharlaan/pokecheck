@@ -11,10 +11,10 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "github",
-    "url": "https://Sharlaan@github.com/pokecheck/pokecheck.git"
+    "url": "https://github.com/Sharlaan/pokecheck.git"
   },
   "bugs": {
-    "url": "https://github.com/pokecheck/pokecheck/issues"
+    "url": "https://github.com/Sharlaan/pokecheck/issues"
   },
   "homepage": "http://pokecheck.surge.sh",
   "devDependencies": {

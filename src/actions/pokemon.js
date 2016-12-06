@@ -1,7 +1,8 @@
 export const actions = {
   POKEMON_UPDATE_LIMITPERPAGE: 'POKEMON_UPDATE_LIMITPERPAGE',
   POKEMON_FETCH: 'POKEMON_FETCH',
-  POKEMON_FETCH_ERROR: 'POKEMON_FETCH_ERROR'
+  POKEMON_FETCH_ERROR: 'POKEMON_FETCH_ERROR',
+  POKEMON_CLEAR: 'POKEMON_CLEAR'
 }
 
 const API_URL = 'http://pokeapi.co/api/v2'
@@ -25,3 +26,5 @@ export const fetchPokemon = (id) => {
     }
   }
 }
+
+export const clearPokemonStore = () => ({ type: actions.POKEMON_CLEAR })

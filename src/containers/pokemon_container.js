@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchPokemon } from '../actions/pokemon'
+import { fetchPokemon, clearPokemonStore } from '../actions/pokemon'
 
 export default (WrappedComponent) => {
   class DetailsContainer extends Component {
@@ -24,6 +24,10 @@ export default (WrappedComponent) => {
       this.props.fetchPokemon(this.props.params.id)
     }
 
+    componentWillUnmount () {
+      this.props.clearPokemonStore()
+    }
+
     render () {
       return (
         <WrappedComponent
@@ -38,7 +42,8 @@ export default (WrappedComponent) => {
   )
 
   const mapDispatchToProps = (dispatch) => ({
-    fetchPokemon: (id) => dispatch(fetchPokemon(id))
+    fetchPokemon: (id) => dispatch(fetchPokemon(id)),
+    clearPokemonStore: () => dispatch(clearPokemonStore())
   })
 
   return connect(mapStateToProps, mapDispatchToProps)(DetailsContainer)
