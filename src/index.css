@@ -1,0 +1,26 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  text-rendering: optimizelegibility;
+  /* Somehow customTheme.fontFamily from MUIProvider
+  isnot applied to 1st level components, ia App Header and Footer.
+  So had to specify fontFamily again here. */
+  font-family: 'Raleway', sans serif;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: #546E7A; /* blueGrey600 */
+  background: #EFEFEF;
+}
+
+/* makes footer always at bottom of page without being stickied */
+/* don't forget to add 'flex:1' on the content container (App.js) */
+/*noinspection CssUnusedSymbol*/
+html, body, #root { height: 100%; }
+#root > div {
+  min-height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+*:focus { outline: none; }
