@@ -9,7 +9,7 @@ html, body {
   font-weight: 300;
   letter-spacing: 0.04em;
   color: #546E7A; /* blueGrey600 */
-  background: #EFEFEF;
+  background: #EEEEEE; /* grey200 */
 }
 
 /* makes footer always at bottom of page without being stickied */

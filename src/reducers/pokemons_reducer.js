@@ -21,7 +21,8 @@ export default (state = INITIAL_STATE, action) => {
         // extract id from url
         let id = p.url.slice(p.url.lastIndexOf('/', p.url.length - 2)).replace(/\//g, '')
         p.id = parseInt(id, 10)
-        p.sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+        const nb = (id.length > 3) ? 0 : (3 - id.length) // Number of zeros to concatenate with id
+        p.sprite = `http://assets.pokemon.com/assets/cms2/img/pokedex/detail/${'0'.repeat(nb) + id}.png`
       }
       return { ...state, ...rest }
 

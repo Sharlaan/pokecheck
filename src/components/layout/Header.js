@@ -5,7 +5,7 @@ import { lightBlue500, blue500, cyan100, transparent } from 'material-ui/styles/
 
 const styles = {
   header: { height: 70, display: 'flex', alignItems: 'center', paddingRight: 0, backgroundColor: lightBlue500 },
-  logo: { height: 60, margin: '0 10px', backgroundColor: transparent },
+  logo: { height: 50, margin: '0 20px', backgroundColor: transparent },
   title: {
     height: '100%',
     lineHeight: 'normal',

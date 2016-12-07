@@ -18,9 +18,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, limit: action.limit }
 
     case actions.POKEMON_FETCH:
-      const { type, ...rest } = action // eslint-disable-line
+      const { type, id, ...rest } = action // eslint-disable-line
       rest.stats = rest.stats.map(stat => ({ name: stat.stat.name, value: stat.base_stat }))
       rest.types = rest.types.map(type => type.type.name)
+      rest.sprite = `http://assets.pokemon.com/assets/cms2/img/pokedex/detail/${'0'.repeat(3 - id.length) + id}.png`
       rest.baseExperience = rest.base_experience
       delete rest.base_experience
       return { ...state, ...rest }

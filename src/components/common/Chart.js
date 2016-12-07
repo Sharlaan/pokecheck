@@ -12,10 +12,10 @@ const avg = {
   hp: 85
 }
 
-const Chart = ({ data, name }) => {
+const Chart = ({ data, name, width, height }) => {
   const mergedData = data.map(obj => ({...obj, avg: avg[obj.subject]}))
   return (
-    <RadarChart outerRadius={90} width={400} height={250} data={mergedData}>
+    <RadarChart outerRadius={90} width={width} height={height} data={mergedData}>
       <Radar name='Average' dataKey='avg' stroke='#82ca9d' fill='#82ca9d' fillOpacity={0.6} />
       <Radar name={name} dataKey={name} stroke='#8884d8' fillOpacity={0} />
       <PolarGrid />

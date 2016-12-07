@@ -21,7 +21,7 @@ export const fetchAllPokemonsPaginated = (limit, offset = 0) => {
       console.debug('error', error)
       dispatch({
         type: actions.POKEMONS_PAGINATED_FETCH_ERROR,
-        error
+        error: error.message
       })
     }
   }
