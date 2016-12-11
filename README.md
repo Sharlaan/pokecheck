@@ -7,6 +7,7 @@ The subject (see [pdf](https://github.com/Sharlaan/pokecheck/blob/master/Zen%20-
 - [x] one can search for a specific pokémon by name
 - [x] one can select a pokémon to view its main characteristics
 - [x] one can compare this selected Pokémon's characteristics with other pokémons of same type
+- [ ] display a few of most recent tweets about the selected pokémon
 - [ ] one can bookmark a given pokémon
 - [ ] ... and a few bonuses depending on time left.
 
@@ -27,7 +28,7 @@ Current version's caching [isnot accepted](http://pokecheck2.surge.sh) by browse
 I chose the following technologies :
 - ES7
 - fetch and Caches API
-- React / Redux
+- React / Redux / React-Router
 - Webpack / Babel with Create-React-App
 - Material-UI
 - FlexboxGrid
@@ -45,7 +46,7 @@ cd pokecheck
 npm i
 npm start
 ```
-
+Then navigate to [http://localhost:3000](http://localhost:3000) in your favorite browser.
 
 ####Notes
 - since previous version were fetching paginated data, the requirement to show averages on Detail page couldnot be fulfilled.
