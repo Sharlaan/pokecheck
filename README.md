@@ -19,7 +19,7 @@ I added the following personal features :
 
 ####Product preview
 - first version (incomplete) can be viewed online at this [address](http://pokecheck.surge.sh).  
-Current version's caching [isnot accepted](http://pokecheck2.surge.sh) by browsers once deployed (check error in console), so can only be experienced locally (see Usage below)
+- Current version is available at [Pokecheck2](https://pokecheck2.surge.sh)
 ![main list](https://github.com/Sharlaan/pokecheck/blob/master/PokeCheck_dev.png)
 ![details](https://github.com/Sharlaan/pokecheck/blob/master/PokeCheckDetails_dev.png)
 
