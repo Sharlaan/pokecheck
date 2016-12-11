@@ -7,7 +7,7 @@ export const actions = {
   POKEMONS_CALC_AVG: 'POKEMONS_CALC_AVG'
 }
 
-const API_URL = 'http://pokeapi.co/api/v2/pokemon'
+const API_URL = 'https://pokeapi.co/api/v2/pokemon'
 // const cacheLimit = 1000000 * 1000 // 11 days
 
 // used to prevent unnecessary calculation of averages

@@ -24,7 +24,7 @@ const styles = {
 const capitalize = string => string.replace(/(^|\s)[a-z]/g, s => s.toUpperCase())
 
 const ListComponent = ({
-  pokemons, percentage, count, limit, page, filterInput,
+  pokemons, count, limit, page, filterInput,
   handleEdit, handleLimitChange, handleFilterInput,
   error, showIDs, onShowIDsToggle }) => {
   if (!pokemons.length) return <Loading />
