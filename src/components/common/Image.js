@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 
+// TODO: simplify into stateless component
 class Image extends Component {
   static propTypes = {
     src: PropTypes.string, // url
@@ -19,13 +20,9 @@ class Image extends Component {
     this.setState({
       imageUrl: this.props.defaultImg,
       style: {
-        height: 34,
-        width: 34,
-        margin: '7px 12px 7px 6px',
-        display: 'block',
-        position: 'absolute',
-        top: 0,
-        left: 4
+        height: this.props.height || this.props.width,
+        width: this.props.height || this.props.width,
+        margin: '7px 12px'
       }
     })
   }
@@ -35,7 +32,7 @@ class Image extends Component {
       <img
         src={this.state.imageUrl}
         onError={this.onError}
-        style={this.state.style}
+        style={{ ...this.state.style, ...this.props.style }}
         alt={this.props.alt}
       />
     )

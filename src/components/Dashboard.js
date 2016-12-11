@@ -1,7 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
+import container from '../containers/dashboard_container'
 
-export default () => (
+const DashboardComponent = () => (
   <section>
     <p>Home page</p>
 
@@ -13,3 +14,5 @@ export default () => (
     </p>
   </section>
 )
+
+export default container(DashboardComponent)

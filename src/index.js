@@ -6,8 +6,9 @@ import Provider from 'react-redux/lib/components/Provider'
 import Router from 'react-router/lib/Router'
 import browserHistory from 'react-router/lib/browserHistory'
 
-// Base styles for body, html tags
+// Base styles
 import './index.css'
+import 'flexboxgrid/css/flexboxgrid.min.css'
 
 import routes from './routes'
 import store from './store'

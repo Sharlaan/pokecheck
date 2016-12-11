@@ -1,6 +1,6 @@
 {
   "name": "pokecheck",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "WebApp to check Pokemon stats, habitat, skills, etc...",
   "keywords": [
@@ -16,15 +16,15 @@
   "bugs": {
     "url": "https://github.com/Sharlaan/pokecheck/issues"
   },
-  "homepage": "http://pokecheck.surge.sh",
+  "homepage": "http://pokecheck2.surge.sh",
   "devDependencies": {
-    "babel-plugin-recharts": "^1.1.0",
     "gh-pages": "^0.12.0",
-    "react-scripts": "^0.8.1",
+    "react-scripts": "^0.8.3",
     "standard": "^8.6.0"
   },
   "dependencies": {
-    "material-ui": "^0.16.4",
+    "flexboxgrid": "^6.3.1",
+    "material-ui": "^0.16.5",
     "moment": "^2.17.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
@@ -41,16 +41,11 @@
       "standard"
     ]
   },
-  "babel": {
-    "plugins": [
-      "recharts"
-    ]
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "deploy": "npm run build  &&  surge -p build -d pokecheck.surge.sh",
+    "deploy": "npm run build  &&  surge -p build -d pokecheck2.surge.sh",
     "stats": "webpack --profile --json > stats.json",
     "lint": "eslint src",
     "eject": "react-scripts eject"

@@ -1,10 +1,12 @@
 import React from 'react'
 import Link from 'react-router/lib/Link'
 import logo from '../../logo.svg'
+import { version } from '../../../package.json'
 import { lightBlue500, blue500, cyan100, transparent } from 'material-ui/styles/colors'
 
 const styles = {
-  header: { height: 70, display: 'flex', alignItems: 'center', paddingRight: 0, backgroundColor: lightBlue500 },
+  header: { zIndex: 3, height: 70, display: 'flex', alignItems: 'center', paddingRight: 0, // eslint-disable-line
+    backgroundColor: lightBlue500, boxShadow: '0px 4px 9px #C5C5C5' }, // eslint-disable-line
   logo: { height: 50, margin: '0 20px', backgroundColor: transparent },
   title: {
     height: '100%',
@@ -27,7 +29,10 @@ export default () => (
     </Link>
 
     <div style={styles.title}>
-      <div style={styles.mainTitle}>Pokemons Check</div>
+      <div>
+        <span style={styles.mainTitle}>Pokemons Check</span>
+        <span style={{marginLeft: 10}}>v{version}</span>
+      </div>
       <div style={styles.subTitle}>An original way to display pokemon's data</div>
     </div>
   </header>

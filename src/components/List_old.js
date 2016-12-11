@@ -1,20 +1,23 @@
 import React from 'react'
 import container from '../containers/list_container'
 import Loading from './common/Loading'
-import CircularProgress from './common/CircularProgress'
 import Paginator from './common/Paginator'
-import Card from './common/Card'
 import TextField from 'material-ui/TextField/TextField'
 import CheckBox from 'material-ui/Checkbox/Checkbox'
 import Snackbar from 'material-ui/Snackbar/Snackbar'
 import IconMenu from 'material-ui/IconMenu/IconMenu'
 import MenuItem from 'material-ui/MenuItem/MenuItem'
+import List from 'material-ui/List/List'
+import ListItem from 'material-ui/List/ListItem'
 import IconButton from 'material-ui/IconButton/IconButton'
 import Paper from 'material-ui/Paper/Paper'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+import Image from './common/Image'
+import UnknownImg from '../unknown.png'
+import { getSpritesCDNurl } from '../helpers'
 
 const styles = {
-  paper: { padding: '20px 30px 30px' },
+  paper: { padding: '20px 30px 30px', minWidth: 350 },
   header: { display: 'flex', justifyContent: 'space-between', marginBottom: 10 },
   tableHeader: { textTransform: 'uppercase' },
   headerFont: { fontSize: 14 },
@@ -24,7 +27,7 @@ const styles = {
 const capitalize = string => string.replace(/(^|\s)[a-z]/g, s => s.toUpperCase())
 
 const ListComponent = ({
-  pokemons, percentage, count, limit, page, filterInput,
+  pokemons, count, limit, page, filterInput,
   handleEdit, handleLimitChange, handleFilterInput,
   error, showIDs, onShowIDsToggle }) => {
   if (!pokemons.length) return <Loading />
@@ -37,10 +40,6 @@ const ListComponent = ({
 
   return (
     <Paper style={styles.paper}>
-
-      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <CircularProgress />
-      </div>
 
       <header style={styles.header}>
         <div>
@@ -66,29 +65,32 @@ const ListComponent = ({
         </IconMenu>
       </header>
 
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '-15px 0 10px' }}>
-        <TextField
-          floatingLabelText="Pokemon filter"
-          hintText="Type a pokemon's name"
-          onChange={handleFilterInput}
-          value={filterInput}
-        />
-      </div>
+      <TextField
+        floatingLabelText="Pokemon filter"
+        hintText="Type a pokemon's name"
+        onChange={handleFilterInput}
+        value={filterInput}
+        style={{ margin: '-10px 0 10px' }}
+      />
 
-      <section className='row center-xs center-lg'>
+      <List>
         {pokemons.slice(offset, offset + limit).map(({id, name}) => (
-          <div key={id} className='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
-            <div className='box'>
-              <Card
-                id={id}
-                title={capitalize(name)}
-                showIDs={showIDs}
-                onTouchTap={handleEdit(id)}
-              />
-            </div>
-          </div>
+          <ListItem
+            key={id}
+            leftIcon={(
+              <Image
+                src={getSpritesCDNurl(id)}
+                defaultImg={UnknownImg}
+                style={{ height: 48, width: 48, margin: '0 12px 0 0' }}
+                alt={`${name}'s icon`}
+              />)}
+            primaryText={<div>{capitalize(name)}
+              <div style={{ float: 'right', visibility: showIDs ? 'visible' : 'hidden' }}>{id}</div>
+            </div>}
+            onTouchTap={handleEdit(id)}
+          />
         ))}
-      </section>
+      </List>
 
       <Paginator
         width={5}
