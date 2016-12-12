@@ -10,7 +10,7 @@ export default (WrappedComponent) => {
     }
 
     componentDidMount () {
-      this.props.fetchAllPokemons()
+      this.props.fetchAllPokemons(this.props.limit)
     }
 
     render () {
@@ -18,9 +18,11 @@ export default (WrappedComponent) => {
     }
   }
 
+  const mapStateToProps = ({ pokemonsStore: {limit} }) => ({ limit })
+
   const mapDispatchToProps = (dispatch) => ({
     fetchAllPokemons: () => dispatch(fetchAllPokemons())
   })
 
-  return connect(null, mapDispatchToProps)(DashboardContainer)
+  return connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)
 }

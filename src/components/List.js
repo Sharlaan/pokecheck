@@ -84,6 +84,7 @@ const ListComponent = ({
                 title={capitalize(name)}
                 showIDs={showIDs}
                 onTouchTap={handleEdit(id)}
+                style={{ height: 200, width: 180 }}
               />
             </div>
           </div>

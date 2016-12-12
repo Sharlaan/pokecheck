@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { getPokemonDetails, updateLimitPerPage } from '../actions/pokemons'
+import { updateLimitPerPage } from '../actions/pokemons'
 
 export default (WrappedComponent) => {
   class ListContainer extends Component {
@@ -28,17 +28,6 @@ export default (WrappedComponent) => {
         count: this.props.count,
         pokemons: this.props.pokemons
       })
-    }
-
-    componentDidMount () {
-      const { pokemons, limit } = this.props
-      if (pokemons[0] && !pokemons[0].specie) {
-        // Fill each pokemon's details while user is still in the list page
-        // Doing so allows to calculate averages to compare pokemons,
-        // before user clicks on one Pokemon
-        const listIDs = pokemons.map(p => p.id)
-        this.props.getPokemonDetails(listIDs, limit)
-      }
     }
 
     componentWillReceiveProps (nextProps) {
@@ -89,7 +78,6 @@ export default (WrappedComponent) => {
   const mapStateToProps = ({ pokemonsStore: {pokemons, limit, count, error} }) => ({ pokemons, limit, count, error })
 
   const mapDispatchToProps = (dispatch) => ({
-    getPokemonDetails: (listIDs, limit) => dispatch(getPokemonDetails(listIDs, limit)),
     updateLimitPerPage: (limit) => dispatch(updateLimitPerPage(limit))
   })
 

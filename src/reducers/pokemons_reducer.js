@@ -9,21 +9,14 @@ const INITIAL_STATE = {
   error: null
 }
 
-/* Extending each pokemon with its id (extracted from url),
- and removing unnecessary properties url */
-const extended = (data) => data.map(p => {
-  const id = p.url.slice(p.url.lastIndexOf('/', p.url.length - 2)).replace(/\//g, '')
-  return { id: +id, name: p.name }
-})
-
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actions.POKEMONS_UPDATE_LIMITPERPAGE:
       return { ...state, limit: action.limit }
 
     case actions.POKEMONS_FETCH:
-      const pokemons = extended(action.pokemons)
-      return { ...state, count: action.count, pokemons }
+      // const pokemons = extended(action.pokemons)
+      return { ...state, count: action.count, pokemons: action.pokemons }
 
     case actions.POKEMONS_DETAILS_FETCH: {
       const ad = action.details
@@ -39,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
       let pk = pokemonsDetails.find(p => p.id === ad.id)
       if (!pk) pokemonsDetails.push(ad)
       else pk = { ...pk, ...ad }
-      // console.debug('Pokemon details pulled to Store !', pokemons.find(p => p.id === ad.id))
+      console.debug('Pokemon details pulled to Store !', pokemonsDetails.find(p => p.id === ad.id))
       return { ...state, pokemonsDetails }
     }
 
