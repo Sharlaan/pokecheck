@@ -51,18 +51,24 @@ npm start
 Then navigate to [http://localhost:3000](http://localhost:3000) in your favorite browser.
 
 ####Notes
-- since previous version were fetching paginated data, the requirement to show averages on Detail page couldnot be fulfilled.
+- since previous version were fetching paginated data, the requirement to show averages on Detail page could not be fulfilled.  
 This version fixes the issue in a progressive way:  
-Step1 fetches all pokemon names/IDs, then Step2 fetches their details in background.  
-This means you can't visualize average in chart till step2 is completely finished
+Step1 fetches all pokemon names/IDs, then Step2 fetches their details in background.   
+This implies you can't visualize average in chart (Detail page) till step2 is completely finished  
 The Circular Progress component displayed in List shows the progress % for Details fetching.  
 The server pokeapi.co can even block temporarily requests with ERROR: TOO MANY REQUESTS message
-- while first previous were relatively performant UX-wise, this isnot the case for this one:
-the background fetching / caching takes its fair share from the main thread, slowing down the rendering...
-I admit this is not ideal and may consider implementing WebWorkers + ServiceWorkers, hopefully should alleviate this rendering slowness issue.
+- while first version were relatively performant UX-wise, this isnot the case for this one:   
+the background fetching / caching takes its fair share from the main thread, slowing down the rendering...    
+I admit this is less than ideal and may consider implementing WebWorkers + ServiceWorkers, hopefully should alleviate this rendering slowness issue while still working for the functionality.
 
 
 ####fetching times
+On Chrome DevTools Panel, upon opening the List page, you check :
+- Cached requests in Application tab > Caches > Cache Storage
+- Averages object stored in Storages > Localstorage
+- 6 fetching tunnels in Timeline tab, showing parallel requests towards pokeapi.co API
+
+
 20.6 mins for 4.6MB (822 requests)   
 barely 2secs once all requests cached
 
