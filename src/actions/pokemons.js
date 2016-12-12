@@ -7,20 +7,29 @@ export const actions = {
   POKEMONS_CALC_AVG: 'POKEMONS_CALC_AVG'
 }
 
-const API_URL = 'https://pokeapi.co/api/v2/pokemon'
+const API_URL = 'https://pokeapi.co/api/v2/pokemon/'
+
+// TODO: add cachLimit to checkCacheThenFetch
 // const cacheLimit = 1000000 * 1000 // 11 days
 
 // used to prevent unnecessary calculation of averages
 // if all urls were already in cache, then should use cached average
 let reCalculateAverages = false
 
-const fetchAndCache = (request) => {
-  return fetch(request)
+const fetchAndCache = (url) => {
+  // eslint-disable-next-line
+  const requestOptions = {
+    method: 'GET',
+    mode: 'cors',
+    redirect: 'follow',
+    headers: new Headers({ 'Content-Type': 'application/json' })
+  }
+  return fetch(url)
     .then(response => {
       if (response.ok) {
         caches.open('pokemons/v2')
-          .then(cache => cache.put(request, response))
-        console.debug(`Fetched and cached ${request}`)
+          .then(cache => cache.put(url, response))
+        console.debug(`Fetched and cached ${url}`)
         reCalculateAverages = true
         return response.clone()
       } else throw new Error(response.statusText)
@@ -55,7 +64,7 @@ export const fetchAllPokemons = () => {
       })
       .then(({ count, results }) => {
         performance.mark('fetchAllPokemons2')
-        checkCacheThenFetch(`${API_URL}/?limit=${count}&offset=${21}`)
+        checkCacheThenFetch(`${API_URL}?limit=${count}&offset=${21}`)
           .then(response => {
             performance.mark('fetchAllPokemons3')
             dispatch({
@@ -65,26 +74,6 @@ export const fetchAllPokemons = () => {
             })
           })
       })
-  }
-}
-
-/* Only fetch the first [limit] items to reduce rendering delay and enhance UX */
-export const fetchAllPokemonsPaginated = (limit, offset = 0) => {
-  return async (dispatch) => {
-    try {
-      const response = await fetch(`${API_URL}/?limit=${limit}&offset=${offset}`).then(r => r.json())
-      dispatch({
-        type: actions.POKEMONS_PAGINATED_FETCH,
-        count: response.count,
-        pokemons: response.results
-      })
-    } catch (error) {
-      console.debug('error2', error)
-      dispatch({
-        type: actions.POKEMONS_FETCH_ERROR,
-        error: error.message
-      })
-    }
   }
 }
 
@@ -98,7 +87,7 @@ export const getPokemonDetails = (listIDs, limit) => {
       performance.mark('getPokemonDetails1')
       // fetch all the first [limit] x URLs in parallel so user get them available in current page
       const fullPokemons = listIDs.slice(0, 0 + limit + 1).map(async id => {
-        const pokemon = await checkCacheThenFetch(`${API_URL}/${id}/`)
+        const pokemon = await checkCacheThenFetch(`${API_URL}${id}/`)
         pokemon.id = id
         return pokemon
       })
@@ -115,7 +104,7 @@ export const getPokemonDetails = (listIDs, limit) => {
 
       // fetch next URLs in parallel so can calculate averages
       const nextFullPokemons = listIDs.slice(0 + limit + 1).map(async id => {
-        const pokemon = await checkCacheThenFetch(`${API_URL}/${id}/`)
+        const pokemon = await checkCacheThenFetch(`${API_URL}${id}/`)
         pokemon.id = id
         return pokemon
       })

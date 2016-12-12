@@ -29,9 +29,11 @@ I chose the following technologies :
 - ES7
 - fetch and Caches API
 - React / Redux / React-Router
-- Webpack / Babel with Create-React-App
+- Webpack / Babel / ESLint with Create-React-App
+- StandardJS Code Style
 - Material-UI
 - FlexboxGrid
+- Recharts
 
 I wished had enough time to try on Inferno, and WebWorkers/ServiceWorkers.
 
