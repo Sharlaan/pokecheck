@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { fetchAllPokemons } from '../actions/pokemons'
+import { getAllPokemons } from '../actions/pokemons'
 
 export default (WrappedComponent) => {
   class DashboardContainer extends Component {
@@ -21,7 +21,7 @@ export default (WrappedComponent) => {
   const mapStateToProps = ({ pokemonsStore: {limit} }) => ({ limit })
 
   const mapDispatchToProps = (dispatch) => ({
-    fetchAllPokemons: () => dispatch(fetchAllPokemons())
+    fetchAllPokemons: () => dispatch(getAllPokemons())
   })
 
   return connect(mapStateToProps, mapDispatchToProps)(DashboardContainer)

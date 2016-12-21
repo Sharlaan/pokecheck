@@ -1,5 +1,7 @@
 export const actions = {
   POKEMONS_UPDATE_LIMITPERPAGE: 'POKEMONS_UPDATE_LIMITPERPAGE',
+  ISFETCHING: 'ISFETCHING',
+  ISFETCHING_ERROR: 'ISFETCHING_ERROR',
   POKEMONS_FETCH_ERROR: 'POKEMONS_FETCH_ERROR',
   POKEMONS_FETCH: 'POKEMONS_FETCH',
   POKEMONS_PAGINATED_FETCH: 'POKEMONS_FETCH',
@@ -12,18 +14,31 @@ const API_URL = 'https://pokeapi.co/api/v2/pokemon/'
 // TODO: add cacheLimit to checkCacheThenFetch
 // const cacheLimit = 1000000 * 1000 // 11 days
 
+/**
+ * Flags
+ * @type {boolean}
+ */
 // used to prevent unnecessary calculation of averages
 // if all urls were already in cache, then should use cached average
 let reCalculateAverages = false
 
+// urls to re-fetch following some 504 / 429 error
+let missedIDs = []
+
+const extractID = url => +url.replace(API_URL, '').replace('/', '')
+
+const saveFailedFetches = id => {
+  if (missedIDs.indexOf(id) === -1) missedIDs.push(id)
+  console.debug('missedIDs', missedIDs.length)
+}
+
 const fetchAndCache = (url) => {
-  // eslint-disable-next-line
-  const requestOptions = {
+  /* const requestOptions = {
     method: 'GET',
     mode: 'cors',
     redirect: 'follow',
     headers: new Headers({ 'Content-Type': 'application/json' })
-  }
+  } */
   return fetch(url)
     .then(response => {
       if (response.ok) {
@@ -31,11 +46,20 @@ const fetchAndCache = (url) => {
           .then(cache => cache.put(url, response))
         console.debug(`Fetched and cached ${url}`)
         reCalculateAverages = true
-        return response.clone()
-      } else throw new Error(response.statusText)
+        const idx = +missedIDs.indexOf(extractID(url))
+        if (idx >= 0) missedIDs.splice(idx, 1)
+      }
+      return response.clone()
+    })
+    .then(r => {
+      if (r.status === 429) {
+        console.debug('response', r.replace(/[^\d]/, ''))
+        console.debug('headers', r.headers.has('retry-after'))
+      }
+      return r
     })
     .then(r => r.json())
-    .catch(error => console.error(error + ' with fetching ' + url))
+    .then(r => ({ ...r, id: extractID(url) }))
 }
 
 const checkCacheThenFetch = (request) => {
@@ -45,15 +69,22 @@ const checkCacheThenFetch = (request) => {
       if (response) {
         console.debug(`Getting response from Cache for request ${request}`)
         return response.json()
-      } else return fetchAndCache(request)
+      } else {
+        console.debug('Not found in Cache, re-fetching request', request)
+        return fetchAndCache(request)
+      }
     })
-    .catch(error => console.error(`No match found in cache for ${request}`, error))
+    .catch(error => {
+      console.error(error + ' while fetching ' + request)
+      return null
+    })
 }
 
+// TODO: fetch descriptions @ http://pokeapi.co/api/v2/pokemon-species/${id}/ => this.flavor_text_entries
 const getPokemonDetails = async (dispatch, listIDs, start, end) => {
   const FullPokemons = listIDs.slice(start, end).map(async id => {
     const pokemon = await checkCacheThenFetch(`${API_URL}${id}/`)
-    pokemon.id = id
+    if (!pokemon) saveFailedFetches(id) // saving failures for another fetching wave later
     return pokemon
   })
   // dispatch them to the pokemonsStore sequentially
@@ -64,13 +95,25 @@ const getPokemonDetails = async (dispatch, listIDs, start, end) => {
       details: { id, name, stats, types, height, weight, specie, base_experience }
     })
   }
+
+  if (missedIDs.length) {
+    console.debug('calling again getPokemonDetails')
+    getPokemonDetails(dispatch, missedIDs, 0)
+  }
 }
 
 /* Tests showed this global fetch actually takes about less than 3secs
  * so ill first fetch the 20 first entries (default limit = 20)
  * then i'll fetch the rest from offset = 21 and limit = response.count */
-export const fetchAllPokemons = (limit) => {
-  return (dispatch) => {
+export const getAllPokemons = (limit) => {
+  return (dispatch, getState) => {
+    if (getState().pokemonsStore.isFetching) {
+      return dispatch({
+        type: actions.ISFETCHING_ERROR,
+        error: 'System is already fetching Details ...'
+      })
+    }
+    dispatch({ type: actions.ISFETCHING, isFetching: true })
     performance.mark('fetchAllPokemons1')
     checkCacheThenFetch(API_URL) // get total count to use as limit in 2nd fetch
       .catch(error => {
@@ -85,10 +128,8 @@ export const fetchAllPokemons = (limit) => {
         checkCacheThenFetch(`${API_URL}?limit=${count}&offset=${21}`)
           .then(response => {
             performance.mark('fetchAllPokemons3')
-            const pokemons = results.concat(response.results).map(p => {
-              const id = p.url.slice(p.url.lastIndexOf('/', p.url.length - 2)).replace(/\//g, '')
-              return { id: +id, name: p.name }
-            })
+            const pokemons = results.concat(response.results)
+                                    .map(p => ({ id: extractID(p.url), name: p.name }))
             // dispatches array of formatted pokemons
             console.debug('dispatching pokemon names list')
             dispatch({
@@ -99,7 +140,7 @@ export const fetchAllPokemons = (limit) => {
 
             performance.mark('getPokemonDetails1')
 
-            // then continues with fetching each pokemons' details
+            // then continue with fetching each pokemons' details
             console.debug('fetching details')
             const listIDs = pokemons.map(p => p.id)
             // fetch only first [limit] x URLs in parallel so user get them available in current page
@@ -113,6 +154,7 @@ export const fetchAllPokemons = (limit) => {
                     // Once all details dispatched, call calculateAverages
                     dispatch({ type: actions.POKEMONS_CALC_AVG, reCalculateAverages })
                     reCalculateAverages = false
+                    return dispatch({ type: actions.ISFETCHING, isFetching: false })
                   })
                   .catch(error => console.debug('Error with 2nd getPokemonDetails', error))
               })

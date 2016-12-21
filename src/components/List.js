@@ -1,7 +1,8 @@
 import React from 'react'
 import container from '../containers/list_container'
 import Loading from './common/Loading'
-import CircularProgress from './common/CircularProgress'
+// import CircularProgress from './common/CircularProgress'
+import LinearProgress from './common/LinearProgress'
 import Paginator from './common/Paginator'
 import Card from './common/Card'
 import TextField from 'material-ui/TextField/TextField'
@@ -14,7 +15,7 @@ import Paper from 'material-ui/Paper/Paper'
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
 
 const styles = {
-  paper: { padding: '20px 30px 30px' },
+  paper: { padding: '20px 30px 30px', position: 'relative' },
   header: { display: 'flex', justifyContent: 'space-between', marginBottom: 10 },
   tableHeader: { textTransform: 'uppercase' },
   headerFont: { fontSize: 14 },
@@ -38,8 +39,8 @@ const ListComponent = ({
   return (
     <Paper style={styles.paper}>
 
-      <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-        <CircularProgress />
+      <div style={{ position: 'absolute', width: '100%', top: 0, left: 0 }}>
+        <LinearProgress />
       </div>
 
       <header style={styles.header}>

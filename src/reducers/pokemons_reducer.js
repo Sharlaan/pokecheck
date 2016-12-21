@@ -1,6 +1,7 @@
 import { actions } from '../actions/pokemons'
 
 const INITIAL_STATE = {
+  isFetching: false, // flag used to prevent user rerunning getAllPokemons by returning to dahboard page
   limit: 20,
   count: 0,
   pokemons: [],
@@ -13,6 +14,14 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case actions.POKEMONS_UPDATE_LIMITPERPAGE:
       return { ...state, limit: action.limit }
+
+    case actions.ISFETCHING:
+      console.debug('isFetching', action.isFetching)
+      return { ...state, isFetching: action.isFetching }
+
+    case actions.ISFETCHING_ERROR:
+      console.debug(action.error)
+      return { ...state, error: action.error }
 
     case actions.POKEMONS_FETCH:
       // const pokemons = extended(action.pokemons)
@@ -32,7 +41,7 @@ export default (state = INITIAL_STATE, action) => {
       let pk = pokemonsDetails.find(p => p.id === ad.id)
       if (!pk) pokemonsDetails.push(ad)
       else pk = { ...pk, ...ad }
-      console.debug('Pokemon details pulled to Store !', pokemonsDetails.find(p => p.id === ad.id))
+      // console.debug('Pokemon details pulled to Store !', pokemonsDetails.find(p => p.id === ad.id))
       return { ...state, pokemonsDetails }
     }
 

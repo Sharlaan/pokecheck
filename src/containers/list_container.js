@@ -31,7 +31,7 @@ export default (WrappedComponent) => {
     }
 
     componentWillReceiveProps (nextProps) {
-      if (nextProps.pokemons !== this.state.pokemons) {
+      if (nextProps.pokemons !== this.props.pokemons) {
         this.setState({ pokemons: nextProps.pokemons })
       }
     }

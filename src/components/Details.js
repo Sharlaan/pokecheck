@@ -17,6 +17,11 @@ const DetailsComponent = ({ id, name, stats, types, height, weight, specie, base
   const nameC = capitalize(name)
   const data = Object.keys(stats).map(statName => ({ subject: statName, [nameC]: stats[statName], fullMark: 150 }))
 
+  const getAvg = type => {
+    const a = averages.find(a => a.type === type)
+    return a ? a.averages : {}
+  }
+
   return (
     <Paper style={{position: 'relative', padding: '0 20px 20px', width: 490}}>
       <Card style={{position: 'absolute', top: 20, right: 20, backgroundColor: grey200}}>
@@ -35,14 +40,15 @@ const DetailsComponent = ({ id, name, stats, types, height, weight, specie, base
         {Object.keys(stats).map((statName, idx) => <li key={idx}>{statName}: {stats[statName]}</li>)}
       </ul>
 
-      {averages.map(a => (
-        <div key={a.type} style={{ marginBottom: 20 }}>
+      {types.map(type => (
+        <div key={type} style={{ marginBottom: 20 }}>
           <Chart
-            type={a.type}
+            type={type}
             name={nameC}
             width={450}
             height={250}
-            data={data} avg={a.averages}
+            data={data}
+            avg={getAvg(type)}
           />
         </div>
       ))}

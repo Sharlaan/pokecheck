@@ -1,6 +1,6 @@
 {
   "name": "pokecheck",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "WebApp to check Pokemon stats, habitat, skills, etc...",
   "keywords": [
@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Sharlaan/pokecheck/issues"
   },
-  "homepage": "https://pokecheck2.surge.sh",
+  "homepage": "https://pokecheck3.surge.sh",
   "devDependencies": {
     "gh-pages": "^0.12.0",
     "react-scripts": "^0.8.4",
@@ -28,10 +28,10 @@
     "moment": "^2.17.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
-    "react-redux": "^4.4.6",
+    "react-redux": "^5.0.1",
     "react-router": "^3.0.0",
     "react-tap-event-plugin": "^2.0.1",
-    "recharts": "^0.19.0",
+    "recharts": "^0.19.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0"
   },
@@ -39,13 +39,16 @@
     "extends": [
       "react-app",
       "standard"
-    ]
+    ],
+    "rules": {
+      "camelcase": "off"
+    }
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "deploy": "npm run build  &&  surge -p build -d https://pokecheck2.surge.sh",
+    "deploy": "npm run build  &&  surge -p build -d https://pokecheck3.surge.sh",
     "stats": "webpack --profile --json > stats.json",
     "lint": "eslint src",
     "eject": "react-scripts eject"
